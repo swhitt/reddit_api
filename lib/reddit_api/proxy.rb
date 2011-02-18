@@ -12,17 +12,19 @@ module RedditApi
       end
     end
     
-    def do_action(path, verb = :get, parameters = {} )
+    def do_action(path, verb = :get, parameters = {})
       verb = verb.to_sym
-      response = self.class.send(verb, path, {
-        ((verb == :get) ? :query : :body) => parameters,
-        :headers => headers_for_request
-      })
+      action_param_key = ((verb == :get) ? :query : :body)
+      request_options = {
+        :headers => headers_for_request,
+        action_param_key => (parameters[action_param_key] || {})
+      }
+      response = self.class.send(verb, path, request_options)
       (response.code == 200) ? response : false
     end
     
     def login(u, p)
-      response = do_action('/api/login', :post, {:user => u, :passwd => p})
+      response = do_action('/api/login', :post, {:body => {:user => u, :passwd => p}})
       headers = response.headers if response
       
       if headers['set-cookie'] && headers['set-cookie'].match('reddit_session')
@@ -32,6 +34,11 @@ module RedditApi
       else
         false
       end
+    end
+    
+    def user
+      return false unless logged_in?
+      @user ||= RedditApi::Reddit.new(:proxy => self).get_reddit_user(@username)
     end
     
     def logged_in?
