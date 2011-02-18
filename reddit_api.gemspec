@@ -6,11 +6,11 @@ Gem::Specification.new do |s|
   s.name        = "reddit_api"
   s.version     = RedditApi::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["TODO: Write your name"]
-  s.email       = ["TODO: Write your email address"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.authors     = ["Steve Whittaker"]
+  s.email       = ["swhitt@gmaill.com"]
+  s.homepage    = "http://reddithouston.com"
+  s.summary     = %q{A quirky reddit.com API for use by /r/houston}
+  s.description = %q{This will interact delightfully with the reddit api, using only the limited features required by the /r/houston management application! Maybe more later.}
 
   s.rubyforge_project = "reddit_api"
 
@@ -18,4 +18,10 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
+
+  s.add_dependency 'httparty'
+  s.add_development_dependency 'awesome_print'
+  s.add_development_dependency 'ruby-debug19'
+  s.add_development_dependency 'pry'
+  s.add_development_dependency 'rspec', '~> 2.4.0'
 end
