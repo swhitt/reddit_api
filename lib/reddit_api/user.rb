@@ -1,26 +1,29 @@
 module RedditApi
   class User < Base
-    attr_reader :kind, :id
+    attr_reader :id
     attr_reader :name, :created, :created_utc
     attr_reader :has_mail, :has_mod_mail, :is_mod
     attr_reader :link_karma, :comment_karma
     
+    def kind
+      't2'
+    end
+    
     def initialize(json={})
       super
-      @kind = json['kind']
-      @id   = json['data']['id']
-      @name = json['data']['name']
-      @created = Time.at(json['data']['created'])
-      @created_utc = Time.at(json['data']['created_utc'])
-      @has_mail = json['data']['has_mail']
-      @has_mod_mail = json['data']['has_mod_mail']
-      @is_mod = json['data']['is_mod']
-      @link_karma = json['data']['link_karma']
-      @comment_karma = json['data']['comment_karma']
+      @id   = json['id']
+      @name = json['name']
+      @created = Time.at(json['created'])
+      @created_utc = Time.at(json['created_utc'])
+      @has_mail = json['has_mail']
+      @has_mod_mail = json['has_mod_mail']
+      @is_mod = json['is_mod']
+      @link_karma = json['link_karma']
+      @comment_karma = json['comment_karma']
     end
     
     def web_id
-      "#{@kind}_#{@id}"
+      "#{kind}_#{@id}"
     end
   end
 end
