@@ -1,21 +1,18 @@
 module RedditApi
-  class Subreddit < Base
-    attr_accessor :id
-    attr_accessor :display_name, :name, :title, :url
-    attr_accessor :created, :created_utc, :subscribers
+  class Subreddit < Thing
+    attr_accessor :display_name, :title, :url
+    attr_accessor :subscribers
     attr_accessor :description
     attr_accessor :over18
-  
-    def initialize(params={})
+
+    register_as_reddit_type :t5
+
+    def initialize(*args)
+      opts = args.extract_options
+      if args[0].is_a? String
+        @display_name = args[0]
+      end
       super
-    end
-    
-    def kind
-      't5'
-    end
-    
-    def web_id
-      name
     end
     
     def base_url
@@ -24,8 +21,18 @@ module RedditApi
     end
     
     def get_stylesheet
-      return false if base_url.blank?
+      return false if ! base_url
       do_action("#{base_url}stylesheet.css", :get, :raw => true)
+    end
+    
+    def change_stylesheet(new_stylesheet)
+      return false if base_url.blank?
+      require_login
+      do_action('/api/subreddit_stylesheet', :post, :body => {
+        :op => 'save', 
+        :r => display_name, 
+        :stylesheet_contents => new_stylesheet
+      })
     end
   end
 end

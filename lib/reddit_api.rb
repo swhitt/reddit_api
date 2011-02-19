@@ -3,9 +3,17 @@ require 'httparty'
 module RedditApi
 end
 
-require 'reddit_api/util'
-require 'reddit_api/proxy'
-require 'reddit_api/base'
-require 'reddit_api/user'
-require 'reddit_api/subreddit'
-require 'reddit_api/reddit'
+REDDIT_API_PATH =  File.expand_path(File.dirname(__FILE__) + '/reddit_api') + '/'
+[
+  'util',
+  'proxy',
+  'base',
+  
+  'thing',
+  'user',
+  'subreddit',
+  'reddit',
+  'link'
+].each do |library|
+  require REDDIT_API_PATH + library
+end
