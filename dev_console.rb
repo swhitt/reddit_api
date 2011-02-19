@@ -9,6 +9,6 @@ require 'ap'
 
 require File.join(File.dirname(__FILE__), 'lib', 'reddit_api')
 
-proxy = RedditApi::Proxy.new
+reddit = RedditApi::Reddit.new
 Pry.start
 

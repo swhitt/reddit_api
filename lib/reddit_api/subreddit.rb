@@ -20,12 +20,21 @@ module RedditApi
       url.blank? ? "/r/#{display_name}/" : url
     end
     
+    def get_links(limit=nil)
+      return false if ! base_url
+      req_params = {:raw => true}
+      req_params[:query] = {:limit => limit.to_i} if limit.to_i > 0
+      do_action("#{base_url}.json", :get, req_params)
+    end
+    
+    alias_method :get_posts, :get_links
+    
     def get_stylesheet
       return false if ! base_url
       do_action("#{base_url}stylesheet.css", :get, :raw => true)
     end
     
-    def change_stylesheet(new_stylesheet)
+    def change_stylesheet!(new_stylesheet)
       return false if base_url.blank?
       require_login
       do_action('/api/subreddit_stylesheet', :post, :body => {

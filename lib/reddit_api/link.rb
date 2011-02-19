@@ -15,5 +15,28 @@ module RedditApi
       super
     end
     
+    def upvote!
+      vote!(1)
+    end
+    
+    def downvote!
+      vote!(-1)
+    end
+    
+    def unvote!
+      vote!(0)
+    end
+    
+    private
+    
+    def vote!(dir)
+      require_login
+      do_action('/api/vote', :post, {
+        :body => {
+          :dir => dir,
+          :id => web_id          
+        }
+      })
+    end
   end
 end

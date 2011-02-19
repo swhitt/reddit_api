@@ -17,12 +17,12 @@ module RedditApi
     # The constructor for RedditApi::Base will take a hash and attempt to set the values described by it.
     def initialize(*args)
       attr_hash = args.extract_options
+      @proxy = attr_hash.delete(:proxy) || Proxy.new(attr_hash)
       attr_hash.each_pair do |key, value|
         m = "#{key}=".to_sym
         next unless self.respond_to? m
         send(m, value)
       end
-      @proxy ||= Proxy.new(attr_hash)
     end
     
     protected
@@ -55,9 +55,8 @@ module RedditApi
       if result.is_a? Hash 
         # If the result's a hash, the service returned valid JSON which was interpreted.
         # Map the result to an object in our domain, using the mappings in KIND_MAP
-        if result['kind'] 
-          klass = get_class_from_type(result['kind'])
-          klass ? klass.new(result['data'].merge({:proxy => @proxy})) : result
+        if result['kind']
+          new_thing_from_params(result) || result
         else 
           # if we can't map it, return the HTTParty::Response
           result
@@ -73,6 +72,11 @@ module RedditApi
           false
         end
       end
+    end
+    
+    def new_thing_from_params(params_hash)
+      klass = get_class_from_type(params_hash['kind'])
+      klass ? klass.new(params_hash['data'].merge({:proxy => @proxy})) : nil
     end
     
     # Check the 'type' attribute of the returned JSON. If we have a mapping to an object, return the class associated with it

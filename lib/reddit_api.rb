@@ -13,7 +13,8 @@ REDDIT_API_PATH =  File.expand_path(File.dirname(__FILE__) + '/reddit_api') + '/
   'user',
   'subreddit',
   'reddit',
-  'link'
+  'link',
+  'listing'
 ].each do |library|
   require REDDIT_API_PATH + library
 end
