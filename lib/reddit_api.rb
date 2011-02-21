@@ -1,4 +1,5 @@
 require 'httparty'
+require 'active_model'
 
 module RedditApi
 end

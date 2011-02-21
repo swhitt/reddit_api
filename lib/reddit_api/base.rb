@@ -5,6 +5,7 @@ module RedditApi
   # itself inherits from Base, be sure to pass the proxy. That way authentication is preserved throughout
   # the chain. 
   class Base
+    include ActiveModel::Validations
     # This will map from a reddit `kind` to a ruby class name (as a string in the RedditApi module).
     # Any of the destination types should inherit from the RedditApi::Thing base class. 
     # The mapping is added to via the `register_as_reddit_type` class method.

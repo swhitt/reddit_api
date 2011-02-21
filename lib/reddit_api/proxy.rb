@@ -27,7 +27,7 @@ module RedditApi
     # Returns true if the login was a success (a session cookie was returned) and sets @cookie, @modhash
     # and @username for the user that logged in. Returns false if we did not succeed. 
     def login(u, p)
-      response = do_action('/api/login', :post, {:body => {:user => u, :passwd => p, :api_type => :json}})
+      response = do_action("/api/login/#{u}", :post, {:body => {:user => u, :passwd => p, :api_type => :json}})
       headers = response.headers if response
       if headers['set-cookie'] && headers['set-cookie'].match('reddit_session')
         @cookie   = headers['set-cookie']
