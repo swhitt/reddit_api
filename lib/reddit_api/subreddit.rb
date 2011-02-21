@@ -30,7 +30,7 @@ module RedditApi
     end
     
     def get_links(limit=nil)
-      return false if ! url
+      require_valid_url
       req_params = {:raw => true}
       req_params[:query] = {:limit => limit.to_i} if limit.to_i > 0
       do_action("#{url}.json", :get, req_params)
@@ -39,12 +39,12 @@ module RedditApi
     alias_method :get_posts, :get_links
     
     def get_stylesheet
-      return false if ! url
+      require_valid_url
       do_action("#{url}stylesheet.css", :get, :raw => true)
     end
     
     def change_stylesheet(new_stylesheet)
-      return false if url.blank?
+      require_valid_url
       require_login
       do_action('/api/subreddit_stylesheet', :post, :body => {
         :op => 'save', 
@@ -55,6 +55,14 @@ module RedditApi
     
     def self.get_stylesheet_for(subreddit_name)
       inst = new(subreddit_name).get_stylesheet
+    end
+    
+    private
+
+    def require_valid_url
+      unless (valid? || errors[:url].empty?)
+        raise RedditApiError.new "The Subreddit URL specified ('#{url}') is invalid."
+      end
     end
     
   end

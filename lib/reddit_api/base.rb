@@ -32,7 +32,7 @@ module RedditApi
     # TODO: Don't throw Exception, make our own type.
     def check_for_proxy
       unless @proxy && @proxy.respond_to?(:do_action)
-        raise Exception.new('Proxy is not set correctly')
+        raise RedditApiError.new('Proxy is not set correctly!')
       end
     end
     
@@ -41,7 +41,7 @@ module RedditApi
     def require_login
       check_for_proxy
       unless @proxy.logged_in?
-        raise Exception.new('You must be logged in to do that.')
+        raise RedditApiError.new('You must be logged in to do that.')
       end
     end
     
