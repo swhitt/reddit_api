@@ -12,7 +12,7 @@ module RedditApi
 
     def children=(cs)
       unless cs.is_a? Array
-        raise Exception.new('Attempted to create Listing with non-array for childern.')
+        raise RedditApiError.new('Attempted to create Listing with non-array for childern.')
       end
       cs.each do |c|
         @children << new_thing_from_params(c)

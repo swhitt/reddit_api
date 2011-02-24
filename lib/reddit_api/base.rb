@@ -29,7 +29,6 @@ module RedditApi
     protected
     
     # Run this method before any local reqs to make sure the proxy is set and is able to do actions (duck typing, anyone?)
-    # TODO: Don't throw Exception, make our own type.
     def check_for_proxy
       unless @proxy && @proxy.respond_to?(:do_action)
         raise RedditApiError.new('Proxy is not set correctly!')
@@ -37,7 +36,6 @@ module RedditApi
     end
     
     # Check for login, throw an exception if we're not logged in.
-    # TODO: Don't throw Exception, make our own type.
     def require_login
       check_for_proxy
       unless @proxy.logged_in?
