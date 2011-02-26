@@ -1,8 +1,14 @@
 module RedditApi
   class Subreddit < Thing
     
-    DISPLAY_NAME_REGEX = /^[A-Za-z0-9][A-Za-z0-9_]{2,20}$/
-    URL_REGEX = /^\/r\/[A-Za-z0-9][A-Za-z0-9_]{2,20}\/$/
+    # These regular expressions can be used to validate both the display name and the /r/ url path 
+    # of a subreddit and make sure it conforms to Reddit's standards.
+    # The kernel of the display name and url regexp, [A-Za-z0-9][A-Za-z0-9_]{2,20}, is provided 
+    # here in regular expression form for uses in ActionDispatch routing, which does not allow the
+    # use of anchor characters.
+    SUBREDIT_ROUTE_REGEXP = /[A-Za-z0-9][A-Za-z0-9_]{2,20}/  
+    DISPLAY_NAME_REGEXP = /^#{SUBREDIT_ROUTE_REGEXP.source}$/
+    URL_REGEXP = /^\/r\/#{SUBREDIT_ROUTE_REGEXP.source}\/$/
     
     attr_accessor :display_name, :title
     attr_writer :url
@@ -12,9 +18,9 @@ module RedditApi
 
     register_as_reddit_type :t5
 
-    validates_format_of :url, :with => URL_REGEX
-    validates_format_of :display_name, :with => DISPLAY_NAME_REGEX, 
-      :if => Proc.new {|sr| (! URL_REGEX.match(sr.url))}
+    validates_format_of :url, :with => URL_REGEXP
+    validates_format_of :display_name, :with => DISPLAY_NAME_REGEXP, 
+      :if => Proc.new {|sr| (! URL_REGEXP.match(sr.url))}
     
     def initialize(*args)
       opts = args.extract_options
