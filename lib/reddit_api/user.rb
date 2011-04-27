@@ -1,5 +1,7 @@
 module RedditApi
   class User < Thing
+    USERNAME_REGEXP = /\A[\w-]{3,20}\Z/
+    
     attr_writer :has_mail, :has_mod_mail, :is_mod
     attr_accessor :link_karma, :comment_karma
     

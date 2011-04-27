@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency 'httparty'
-  s.add_dependency 'activemodel', '~> 3.0.4'  
+  s.add_dependency 'activemodel', '> 3.0.4'  
   s.add_development_dependency 'awesome_print'
   s.add_development_dependency 'ruby-debug19'
   s.add_development_dependency 'pry'
